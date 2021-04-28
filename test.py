@@ -42,6 +42,8 @@ class Pacman:
         self.x = 0
         self.y = 0
         self.score = 0
+        self.compteur = Label(text='Score = 0', bg='black', fg='white')
+        self.compteur.grid(row=0, column=1)
 
     def deplace_r(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
@@ -55,6 +57,7 @@ class Pacman:
                 if len(bille) != 0:
                     canvas.delete(bille[0])
                     self.score += 1
+                    self.compteur.configure(text='score = ' + str(self.score))
                     print(self.score)
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
 
@@ -70,7 +73,7 @@ class Pacman:
                 if len(bille) != 0:
                     canvas.delete(bille[0])
                     self.score += 1
-                    print(self.score)
+                    self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
 
     def deplace_u(self):
@@ -83,7 +86,7 @@ class Pacman:
                 if len(bille) != 0:
                     canvas.delete(bille[0])
                     self.score += 1
-                    print(self.score)
+                    self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
 
     def deplace_d(self):
@@ -96,8 +99,9 @@ class Pacman:
                 if len(bille) != 0:
                     canvas.delete(bille[0])
                     self.score += 1
-                    print(self.score)
+                    self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+
 
 fen = Tk()
 
@@ -107,7 +111,7 @@ tab.open()
 
 canvas = Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, background='#000')
 
-canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
+canvas.grid(row=1, column=1, rowspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
 joueur = Pacman()
 
