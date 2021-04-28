@@ -1,3 +1,9 @@
+# Changement des déplacement:fonction deplace(self, direction) changer en: -deplace_d
+#                                                                         -deplace_l
+#                                                                         -deplace_u
+#                                                                         -deplace_r
+# mise en place des pièce comtabilisée dans la variable self.score de Pacman
+
 from tkinter import *
 
 class Tableau:
@@ -22,8 +28,6 @@ class Tableau:
                     canvas.create_rectangle(i_colonne * 20, i_ligne * 20, i_colonne * 20 + 20, i_ligne * 20 + 20, fill='#07007e')
                 if ligne[i_colonne] == '0':
                     canvas.create_oval(i_colonne * 20 + 7, i_ligne * 20 + 7, i_colonne * 20 + 13, i_ligne * 20 + 13, fill='#fff')
-                if ligne[i_colonne] == '2':
-                    canvas.create_rectangle(i_colonne * 20, i_ligne * 20, i_colonne * 20 + 20, i_ligne * 20 + 20, fill='#000')
 
     def mod(self, y, x, chiffre):
         modification = self.tableau[y][:x] + chiffre + self.tableau[y][x+1:]
@@ -57,8 +61,8 @@ class Pacman:
     def deplace_l(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
         self.y = int(canvas.coords(self.pacman)[1] // 20)
-        if (self.x, self.y) == (18, 9):
-            self.x, self.y = 0, 9
+        if (self.x, self.y) == (0, 9):
+            self.x, self.y = 18, 9
         elif self.x < len(tab.tableau[0]):
             if tab.tableau[self.y][self.x - 1] != '1':
                 self.x -= 1
@@ -72,9 +76,7 @@ class Pacman:
     def deplace_u(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
         self.y = int(canvas.coords(self.pacman)[1] // 20)
-        if (self.x, self.y) == (18, 9):
-            self.x, self.y = 0, 9
-        elif self.x < len(tab.tableau[0]):
+        if self.x < len(tab.tableau[0]):
             if tab.tableau[self.y - 1][self.x] != '1':
                 self.y -= 1
                 bille = canvas.find_enclosed(self.x * 20, self.y * 20, self.x * 20 + 20, self.y * 20 + 20)
@@ -87,9 +89,7 @@ class Pacman:
     def deplace_d(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
         self.y = int(canvas.coords(self.pacman)[1] // 20)
-        if (self.x, self.y) == (18, 9):
-            self.x, self.y = 0, 9
-        elif self.x < len(tab.tableau[0]):
+        if self.x < len(tab.tableau[0]):
             if tab.tableau[self.y + 1][self.x] != '1':
                 self.y += 1
                 bille = canvas.find_enclosed(self.x * 20, self.y * 20, self.x * 20 + 20, self.y * 20 + 20)
