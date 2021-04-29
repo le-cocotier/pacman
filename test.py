@@ -4,7 +4,7 @@
 #                                                                         -deplace_r
 # mise en place des pièce comtabilisée dans la variable self.score de Pacman
 
-from tkinter import *
+import tkinter
 from tkinter import messagebox
 
 class Tableau:
@@ -45,7 +45,7 @@ class Pacman:
         self.x = 0
         self.y = 0
         self.score = 0
-        self.compteur = Label(text='Score = 0', bg='black', fg='white')
+        self.compteur = tkinter.Label(text='Score = 0', bg='black', fg='white')
         self.compteur.grid(row=0, column=1, columnspan=3)
 
     def win(self):
@@ -114,14 +114,14 @@ class Pacman:
         self.win()
 
 
-fen = Tk()
+fen = tkinter.Tk()
 
 fen.title("Pacman")
 fen.configure(bg='black')
 tab = Tableau()
 tab.open()
 
-canvas = Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, bg='#000')
+canvas = tkinter.Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, bg='#000')
 
 canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
