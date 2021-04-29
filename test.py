@@ -5,6 +5,7 @@
 # mise en place des pièce comtabilisée dans la variable self.score de Pacman
 
 from tkinter import *
+from tkinter import messagebox
 
 class Tableau:
     """gestion du level"""
@@ -19,6 +20,8 @@ class Tableau:
         file = open(self.level, "r")
         read = file.read()
         self.tableau = list(read.split("\n"))
+        self.tableau.remove(self.tableau[-1])
+        print(self.tableau)
 
     def place(self):
         for i_ligne in range(len(self.tableau)):
@@ -43,7 +46,12 @@ class Pacman:
         self.y = 0
         self.score = 0
         self.compteur = Label(text='Score = 0', bg='black', fg='white')
-        self.compteur.grid(row=0, column=1)
+        self.compteur.grid(row=0, column=1, columnspan=3)
+
+    def win(self):
+        if self.score == 176:
+            messagebox.showinfo("Pacman", "Vous avez gagné!")
+            fen.destroy()
 
     def deplace_r(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
@@ -58,8 +66,8 @@ class Pacman:
                     canvas.delete(bille[0])
                     self.score += 1
                     self.compteur.configure(text='score = ' + str(self.score))
-                    print(self.score)
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+        self.win()
 
     def deplace_l(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
@@ -75,6 +83,7 @@ class Pacman:
                     self.score += 1
                     self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+        self.win()
 
     def deplace_u(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
@@ -88,6 +97,7 @@ class Pacman:
                     self.score += 1
                     self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+        self.win()
 
     def deplace_d(self):
         self.x = int(canvas.coords(self.pacman)[0] // 20)
@@ -101,17 +111,19 @@ class Pacman:
                     self.score += 1
                     self.compteur.configure(text='score = ' + str(self.score))
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+        self.win()
 
 
 fen = Tk()
 
 fen.title("Pacman")
+fen.configure(bg='black')
 tab = Tableau()
 tab.open()
 
-canvas = Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, background='#000')
+canvas = Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, bg='#000')
 
-canvas.grid(row=1, column=1, rowspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
+canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
 joueur = Pacman()
 
