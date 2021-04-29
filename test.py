@@ -3,6 +3,8 @@
 #                                                                         -deplace_u
 #                                                                         -deplace_r
 # mise en place des pièce comtabilisée dans la variable self.score de Pacman
+# mise en place du compteur de point
+# mise en place de la condition de victiore et de la fenetre de victoire
 
 import tkinter
 from tkinter import messagebox
