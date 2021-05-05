@@ -44,13 +44,16 @@ class Pacman:
         self.pacman = canvas.create_oval(182, 182, 198, 198, fill='yellow')
         self.x = 0
         self.y = 0
-        self.score = 0
-        self.compteur = tkinter.Label(text='Score = 0', bg='black', fg='white')
-        self.compteur.grid(row=0, column=1, columnspan=3)
+        self.vie = True
 
     def win(self):
         if self.score == 176:
             messagebox.showinfo("Pacman", "Vous avez gagné!")
+            fen.destroy()
+
+    def game_over(self):
+        if not self.vie:
+            messagebox.showinfo("Pacman", "Vous avez perdu!")
             fen.destroy()
 
     def deplace_r(self):
@@ -114,6 +117,52 @@ class Pacman:
         self.win()
 
 
+class Ghost:
+    """gestion du perso"""
+
+    def __init__(self, x, y, color):
+        self.ghost = canvas.create_polygon(x, y, x + 10, y -20, x + 20, y, fill=color)
+        self.x = x
+        self.y = y
+
+    def deplace_r(self):
+        self.x = int(canvas.coords(self.ghost)[0] // 20)
+        self.y = int(canvas.coords(self.ghost)[1] // 20)
+        if (self.x, self.y) == (18, 10):
+            self.x, self.y = 0, 10
+        elif self.x < len(tab.tableau[0]):
+            if tab.tableau[self.y - 1][self.x + 1] != '1':
+                self.x += 1
+        canvas.coords(self.ghost, self.x * 20, self.y * 20, self.x * 20 + 10, self.y * 20 - 20, self.x * 20 + 20, self.y * 20)
+
+    def deplace_l(self):
+        self.x = int(canvas.coords(self.ghost)[0] // 20)
+        self.y = int(canvas.coords(self.ghost)[1] // 20)
+        if (self.x, self.y) == (0, 10):
+            self.x, self.y = 18, 10
+        elif self.x < len(tab.tableau[0]):
+            if tab.tableau[self.y - 1][self.x - 1] != '1':
+                self.x -= 1
+        canvas.coords(self.ghost, self.x * 20, self.y * 20, self.x * 20 + 10, self.y * 20 - 20, self.x * 20 + 20, self.y * 20)
+
+    def deplace_u(self):
+        self.x = int(canvas.coords(self.ghost)[0] // 20)
+        self.y = int(canvas.coords(self.ghost)[1] // 20)
+        if self.x < len(tab.tableau[0]):
+            if tab.tableau[self.y - 2][self.x] != '1':
+                self.y -= 1
+        canvas.coords(self.ghost, self.x * 20, self.y * 20, self.x * 20 + 10, self.y * 20 - 20, self.x * 20 + 20, self.y * 20)
+
+    def deplace_d(self):
+        self.x = int(canvas.coords(self.ghost)[0] // 20)
+        self.y = int(canvas.coords(self.ghost)[1] // 20)
+        if self.x < len(tab.tableau[0]):
+            if tab.tableau[self.y][self.x] != '1':
+                self.y += 1
+        canvas.coords(self.ghost, self.x * 20, self.y * 20, self.x * 20 + 10, self.y * 20 - 20, self.x * 20 + 20, self.y * 20)
+
+
+
 fen = tkinter.Tk()
 
 fen.title("Pacman")
@@ -125,8 +174,7 @@ canvas = tkinter.Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tabl
 
 canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
-joueur = Pacman()
-
+joueur = Ghost(20,40, 'red')
 fen.bind("<z>", lambda event: joueur.deplace_u())#Joueurj.sendco('u')
 fen.bind("<s>", lambda event: joueur.deplace_d())#, Joueurj.sendco('d')
 fen.bind("<q>", lambda event: joueur.deplace_l())#, Joueurj.sendco('l')
