@@ -3,6 +3,8 @@
 #                                                                         -deplace_u
 #                                                                         -deplace_r
 # mise en place des pièce comtabilisée dans la variable self.score de Pacman
+# mise en place du compteur de point
+# mise en place de la condition de victiore et de la fenetre de victoire
 
 import tkinter
 from tkinter import messagebox
@@ -44,16 +46,13 @@ class Pacman:
         self.pacman = canvas.create_oval(182, 182, 198, 198, fill='yellow')
         self.x = 0
         self.y = 0
-        self.vie = True
+        self.score = 0
+        self.compteur = tkinter.Label(text='Score = 0', bg='black', fg='white')
+        self.compteur.grid(row=0, column=1, columnspan=3)
 
     def win(self):
         if self.score == 176:
             messagebox.showinfo("Pacman", "Vous avez gagné!")
-            fen.destroy()
-
-    def game_over(self):
-        if not self.vie:
-            messagebox.showinfo("Pacman", "Vous avez perdu!")
             fen.destroy()
 
     def deplace_r(self):
@@ -162,7 +161,6 @@ class Ghost:
         canvas.coords(self.ghost, self.x * 20, self.y * 20, self.x * 20 + 10, self.y * 20 - 20, self.x * 20 + 20, self.y * 20)
 
 
-
 fen = tkinter.Tk()
 
 fen.title("Pacman")
@@ -174,7 +172,8 @@ canvas = tkinter.Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tabl
 
 canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
-joueur = Ghost(20,40, 'red')
+joueur = Ghost(20, 40, 'red')
+
 fen.bind("<z>", lambda event: joueur.deplace_u())#Joueurj.sendco('u')
 fen.bind("<s>", lambda event: joueur.deplace_d())#, Joueurj.sendco('d')
 fen.bind("<q>", lambda event: joueur.deplace_l())#, Joueurj.sendco('l')
