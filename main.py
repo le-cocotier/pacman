@@ -8,6 +8,8 @@
 
 import tkinter
 from tkinter import messagebox
+from tkinter.constants import FALSE
+from typing import FrozenSet
 
 class Tableau:
     """gestion du level"""
@@ -33,6 +35,8 @@ class Tableau:
                     canvas.create_rectangle(i_colonne * 20, i_ligne * 20, i_colonne * 20 + 20, i_ligne * 20 + 20, fill='#07007e')
                 if ligne[i_colonne] == '0':
                     canvas.create_oval(i_colonne * 20 + 7, i_ligne * 20 + 7, i_colonne * 20 + 13, i_ligne * 20 + 13, fill='#fff')
+                if ligne[i_colonne] == '3':
+                    canvas.create_oval(i_colonne * 20 + 5, i_ligne * 20 + 5, i_colonne * 20 + 15, i_ligne * 20 + 15, fill='#07007e')
 
     def mod(self, y, x, chiffre):
         modification = self.tableau[y][:x] + chiffre + self.tableau[y][x+1:]
@@ -79,12 +83,15 @@ class Pacman:
         elif self.x < len(tab.tableau[0]):
             if tab.tableau[self.y][self.x - 1] != '1':
                 self.x -= 1
-                bille = canvas.find_enclosed(self.x * 20, self.y * 20, self.x * 20 + 20, self.y * 20 + 20)
+                bille = canvas.find_enclosed(self.x * 20 + 4, self.y * 20 + 4, self.x * 20 + 16, self.y * 20 + 16)
                 if len(bille) != 0:
-                    canvas.delete(bille[0])
-                    self.score += 1
-                    self.compteur.configure(text='score = ' + str(self.score))
-        canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
+                    bille = canvas.find_enclosed(self.x * 20 + 6, self.y * 20 + 6, self.x * 20 + 14, self.y * 20 + 14)
+                    if len(bille) != 0:
+                        canvas.delete(bille[0])
+                        self.score += 1
+                        self.compteur.configure(text='score = ' + str(self.score))
+                    len
+            canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
         self.win()
 
     def deplace_u(self):
@@ -112,6 +119,8 @@ class Pacman:
                     canvas.delete(bille[0])
                     self.score += 1
                     self.compteur.configure(text='score = ' + str(self.score))
+                can_eat = True
+                print(can_eat)
         canvas.coords(self.pacman, self.x * 20 +2, self.y * 20 + 2, self.x * 20 + 18, self.y * 20 + 18)
         self.win()
 
@@ -169,10 +178,12 @@ tab = Tableau()
 tab.open()
 
 canvas = tkinter.Canvas(fen, width=len(tab.tableau[0]) * 20, height=len(tab.tableau) * 20, bg='#000')
+can_eat = False
 
 canvas.grid(row=1, column=1, columnspan=3)  # méthode qui permet de placer la zone de dessin dans la fenêtre
 tab.place()
-joueur = Ghost(20, 40, 'red')
+
+joueur = Pacman()
 
 fen.bind("<z>", lambda event: joueur.deplace_u())#Joueurj.sendco('u')
 fen.bind("<s>", lambda event: joueur.deplace_d())#, Joueurj.sendco('d')
